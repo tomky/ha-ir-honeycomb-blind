@@ -17,7 +17,9 @@
           "ir_repeat": "IR Repeat Count",
           "ir_repeat_delay": "IR Repeat Delay (seconds)",
           "debounce_delay": "Debounce Delay (seconds)",
-          "realtime_position": "Real-time Position Update"
+          "realtime_position": "Real-time Position Update",
+          "enable_separate_covers": "Separate Position/Ratio Covers",
+          "enable_combined_cover": "Combined Cover with Tilt"
         },
         "data_description": {
           "blind_name": "A unique name for this blind",
@@ -32,7 +34,9 @@
           "ir_repeat": "Number of times to repeat each IR command",
           "ir_repeat_delay": "Delay between repeated IR commands",
           "debounce_delay": "Wait time before executing position changes",
-          "realtime_position": "Update position display in real-time while blind is moving"
+          "realtime_position": "Update position display in real-time while blind is moving",
+          "enable_separate_covers": "Create separate cover entities for position and ratio control",
+          "enable_combined_cover": "Create a single cover entity with position and tilt (ratio) control"
         }
       }
     },
@@ -61,7 +65,9 @@
           "ir_repeat": "IR Repeat Count",
           "ir_repeat_delay": "IR Repeat Delay (seconds)",
           "debounce_delay": "Debounce Delay (seconds)",
-          "realtime_position": "Real-time Position Update"
+          "realtime_position": "Real-time Position Update",
+          "enable_separate_covers": "Separate Position/Ratio Covers",
+          "enable_combined_cover": "Combined Cover with Tilt"
         }
       }
     },
@@ -81,6 +87,9 @@
       },
       "ratio": {
         "name": "Top Rail Ratio"
+      },
+      "combined": {
+        "name": "Blind"
       }
     }
   },

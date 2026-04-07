@@ -13,6 +13,8 @@ from homeassistant.helpers import selector
 from .const import (
     CONF_BLIND_NAME,
     CONF_DEBOUNCE_DELAY,
+    CONF_ENABLE_COMBINED_COVER,
+    CONF_ENABLE_SEPARATE_COVERS,
     CONF_IR_CODE_B_DN,
     CONF_IR_CODE_B_UP,
     CONF_IR_CODE_STOP,
@@ -25,6 +27,8 @@ from .const import (
     CONF_T_CLOSE,
     CONF_T_OPEN,
     DEFAULT_DEBOUNCE_DELAY,
+    DEFAULT_ENABLE_COMBINED_COVER,
+    DEFAULT_ENABLE_SEPARATE_COVERS,
     DEFAULT_IR_REPEAT,
     DEFAULT_IR_REPEAT_DELAY,
     DEFAULT_REALTIME_POSITION,
@@ -154,6 +158,12 @@ class HoneycombBlindConfigFlow(ConfigFlow, domain=DOMAIN):
                 ),
                 vol.Required(
                     CONF_REALTIME_POSITION, default=DEFAULT_REALTIME_POSITION
+                ): selector.BooleanSelector(),
+                vol.Required(
+                    CONF_ENABLE_SEPARATE_COVERS, default=DEFAULT_ENABLE_SEPARATE_COVERS
+                ): selector.BooleanSelector(),
+                vol.Required(
+                    CONF_ENABLE_COMBINED_COVER, default=DEFAULT_ENABLE_COMBINED_COVER
                 ): selector.BooleanSelector(),
             }
         )
@@ -301,6 +311,14 @@ class HoneycombBlindOptionsFlow(OptionsFlow):
                 vol.Required(
                     CONF_REALTIME_POSITION,
                     default=current.get(CONF_REALTIME_POSITION, DEFAULT_REALTIME_POSITION),
+                ): selector.BooleanSelector(),
+                vol.Required(
+                    CONF_ENABLE_SEPARATE_COVERS,
+                    default=current.get(CONF_ENABLE_SEPARATE_COVERS, DEFAULT_ENABLE_SEPARATE_COVERS),
+                ): selector.BooleanSelector(),
+                vol.Required(
+                    CONF_ENABLE_COMBINED_COVER,
+                    default=current.get(CONF_ENABLE_COMBINED_COVER, DEFAULT_ENABLE_COMBINED_COVER),
                 ): selector.BooleanSelector(),
             }
         )

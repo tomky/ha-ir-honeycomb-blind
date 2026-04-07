@@ -16,6 +16,8 @@ CONF_IR_REPEAT = "ir_repeat"
 CONF_IR_REPEAT_DELAY = "ir_repeat_delay"
 CONF_DEBOUNCE_DELAY = "debounce_delay"
 CONF_REALTIME_POSITION = "realtime_position"
+CONF_ENABLE_SEPARATE_COVERS = "enable_separate_covers"
+CONF_ENABLE_COMBINED_COVER = "enable_combined_cover"
 
 # Default values
 DEFAULT_T_OPEN = 30.0
@@ -24,6 +26,8 @@ DEFAULT_IR_REPEAT = 3
 DEFAULT_IR_REPEAT_DELAY = 0.3
 DEFAULT_DEBOUNCE_DELAY = 1.0
 DEFAULT_REALTIME_POSITION = True
+DEFAULT_ENABLE_SEPARATE_COVERS = True
+DEFAULT_ENABLE_COMBINED_COVER = False
 
 # Realtime update interval (seconds)
 REALTIME_UPDATE_INTERVAL = 0.5
@@ -40,3 +44,4 @@ ATTR_TOP_POS = "top_pos"
 # Entity suffixes
 ENTITY_SUFFIX_POSITION = "position"
 ENTITY_SUFFIX_RATIO = "ratio"
+ENTITY_SUFFIX_COMBINED = "combined"
