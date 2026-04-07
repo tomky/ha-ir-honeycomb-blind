@@ -49,6 +49,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
+    # Register update listener for options changes (auto-reload)
+    entry.async_on_unload(entry.add_update_listener(async_reload_entry))
+
     # Register services if not already registered
     if not hass.services.has_service(DOMAIN, SERVICE_CALIBRATE):
         async def handle_calibrate(call: ServiceCall) -> None:
@@ -101,3 +104,9 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data[DOMAIN].pop(DATA_IR_LOCKS, None)
 
     return unload_ok
+
+
+async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Reload config entry when options change."""
+    _LOGGER.debug("Reloading IR Honeycomb Blind due to options change: %s", entry.entry_id)
+    await hass.config_entries.async_reload(entry.entry_id)
