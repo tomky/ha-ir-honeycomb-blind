@@ -1,0 +1,11 @@
+calibrate:
+  name: Calibrate
+  description: Calibrate the blind by moving rails to known positions (top rail to top, bottom rail to bottom).
+  fields:
+    entry_id:
+      name: Entry ID
+      description: The config entry ID of the blind to calibrate. Leave empty to calibrate all blinds.
+      required: false
+      example: "abc123def456"
+      selector:
+        text:

@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Development files (not needed for release)
+CLAUDE_CODE_HANDOFF.md
+honeycomb_blinds.yaml
+.claude/
+
+# Home Assistant
+.storage/

@@ -1,0 +1,13 @@
+{
+  "domain": "ir_honeycomb_blind",
+  "name": "IR Honeycomb Blind",
+  "codeowners": ["@tomky"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/tomky/ha-ir-honeycomb-blind",
+  "iot_class": "assumed_state",
+  "issue_tracker": "https://github.com/tomky/ha-ir-honeycomb-blind/issues",
+  "requirements": [],
+  "version": "0.5.0",
+  "homeassistant": "2024.1.0"
+}

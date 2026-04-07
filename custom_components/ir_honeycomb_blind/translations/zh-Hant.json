@@ -1,0 +1,96 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "新增紅外線蜂巢簾",
+        "description": "設定新的紅外線控制蜂巢簾（上下合簾）。",
+        "data": {
+          "blind_name": "窗簾名稱",
+          "remote_entity": "Broadlink 遙控器",
+          "ir_code_t_up": "IR 碼：上簾往上 (T-UP)",
+          "ir_code_t_dn": "IR 碼：上簾往下 (T-DN)",
+          "ir_code_b_up": "IR 碼：下簾往上 (B-UP)",
+          "ir_code_b_dn": "IR 碼：下簾往下 (B-DN)",
+          "ir_code_stop": "IR 碼：停止",
+          "t_open": "全開時間（秒）",
+          "t_close": "全關時間（秒）",
+          "ir_repeat": "IR 重複次數",
+          "ir_repeat_delay": "IR 重複間隔（秒）",
+          "debounce_delay": "防抖延遲（秒）"
+        },
+        "data_description": {
+          "blind_name": "為此窗簾取一個獨特的名稱",
+          "remote_entity": "選擇要使用的 Broadlink 遙控器",
+          "ir_code_t_up": "Base64 IR 碼，需以 'b64:' 開頭",
+          "ir_code_t_dn": "Base64 IR 碼，需以 'b64:' 開頭",
+          "ir_code_b_up": "Base64 IR 碼，需以 'b64:' 開頭",
+          "ir_code_b_dn": "Base64 IR 碼，需以 'b64:' 開頭",
+          "ir_code_stop": "Base64 IR 碼，需以 'b64:' 開頭",
+          "t_open": "窗簾從全關到全開所需時間",
+          "t_close": "窗簾從全開到全關所需時間",
+          "ir_repeat": "每次 IR 指令的重複發送次數",
+          "ir_repeat_delay": "重複發送 IR 指令之間的間隔",
+          "debounce_delay": "執行位置變更前的等待時間"
+        }
+      }
+    },
+    "error": {
+      "remote_not_found": "找不到遙控器實體",
+      "invalid_ir_code": "IR 碼必須以 'b64:' 開頭"
+    },
+    "abort": {
+      "already_configured": "此窗簾已設定過"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "設定紅外線蜂巢簾",
+        "description": "更新此窗簾的設定。",
+        "data": {
+          "remote_entity": "Broadlink 遙控器",
+          "ir_code_t_up": "IR 碼：上簾往上 (T-UP)",
+          "ir_code_t_dn": "IR 碼：上簾往下 (T-DN)",
+          "ir_code_b_up": "IR 碼：下簾往上 (B-UP)",
+          "ir_code_b_dn": "IR 碼：下簾往下 (B-DN)",
+          "ir_code_stop": "IR 碼：停止",
+          "t_open": "全開時間（秒）",
+          "t_close": "全關時間（秒）",
+          "ir_repeat": "IR 重複次數",
+          "ir_repeat_delay": "IR 重複間隔（秒）",
+          "debounce_delay": "防抖延遲（秒）"
+        }
+      }
+    },
+    "error": {
+      "invalid_ir_code": "IR 碼必須以 'b64:' 開頭"
+    }
+  },
+  "entity": {
+    "button": {
+      "calibrate": {
+        "name": "校正"
+      }
+    },
+    "cover": {
+      "position": {
+        "name": "下簾位置"
+      },
+      "ratio": {
+        "name": "上簾比例"
+      }
+    }
+  },
+  "services": {
+    "calibrate": {
+      "name": "校正",
+      "description": "將窗簾移動到已知位置進行校正（上簾移到最頂、下簾移到最底）。",
+      "fields": {
+        "entry_id": {
+          "name": "設定項目 ID",
+          "description": "要校正的窗簾設定項目 ID。留空則校正所有窗簾。"
+        }
+      }
+    }
+  }
+}
