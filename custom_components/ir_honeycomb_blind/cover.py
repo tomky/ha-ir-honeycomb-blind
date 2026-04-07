@@ -13,6 +13,7 @@ from homeassistant.components.cover import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -46,14 +47,36 @@ async def async_setup_entry(
     enable_separate = entry.data.get(CONF_ENABLE_SEPARATE_COVERS, DEFAULT_ENABLE_SEPARATE_COVERS)
     enable_combined = entry.data.get(CONF_ENABLE_COMBINED_COVER, DEFAULT_ENABLE_COMBINED_COVER)
 
+    # Build list of unique_ids that should exist based on current config
+    expected_unique_ids: set[str] = set()
+
     # Add separate position/ratio covers if enabled
     if enable_separate:
         entities.append(HoneycombBlindPositionCover(coordinator, entry))
         entities.append(HoneycombBlindRatioCover(coordinator, entry))
+        expected_unique_ids.add(f"{entry.entry_id}_{ENTITY_SUFFIX_POSITION}")
+        expected_unique_ids.add(f"{entry.entry_id}_{ENTITY_SUFFIX_RATIO}")
 
     # Add combined cover with tilt if enabled
     if enable_combined:
         entities.append(HoneycombBlindCombinedCover(coordinator, entry))
+        expected_unique_ids.add(f"{entry.entry_id}_{ENTITY_SUFFIX_COMBINED}")
+
+    # Remove entities from registry that are no longer enabled
+    all_possible_unique_ids = {
+        f"{entry.entry_id}_{ENTITY_SUFFIX_POSITION}",
+        f"{entry.entry_id}_{ENTITY_SUFFIX_RATIO}",
+        f"{entry.entry_id}_{ENTITY_SUFFIX_COMBINED}",
+    }
+    unique_ids_to_remove = all_possible_unique_ids - expected_unique_ids
+
+    if unique_ids_to_remove:
+        ent_reg = er.async_get(hass)
+        for unique_id in unique_ids_to_remove:
+            entity_id = ent_reg.async_get_entity_id("cover", DOMAIN, unique_id)
+            if entity_id:
+                _LOGGER.debug("Removing disabled cover entity: %s", entity_id)
+                ent_reg.async_remove(entity_id)
 
     async_add_entities(entities)
 
