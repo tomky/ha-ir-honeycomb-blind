@@ -16,7 +16,8 @@
           "t_close": "全關時間（秒）",
           "ir_repeat": "IR 重複次數",
           "ir_repeat_delay": "IR 重複間隔（秒）",
-          "debounce_delay": "防抖延遲（秒）"
+          "debounce_delay": "防抖延遲（秒）",
+          "realtime_position": "即時位置更新"
         },
         "data_description": {
           "blind_name": "為此窗簾取一個獨特的名稱",
@@ -30,7 +31,8 @@
           "t_close": "窗簾從全開到全關所需時間",
           "ir_repeat": "每次 IR 指令的重複發送次數",
           "ir_repeat_delay": "重複發送 IR 指令之間的間隔",
-          "debounce_delay": "執行位置變更前的等待時間"
+          "debounce_delay": "執行位置變更前的等待時間",
+          "realtime_position": "在窗簾移動時即時更新位置顯示"
         }
       }
     },
@@ -58,7 +60,8 @@
           "t_close": "全關時間（秒）",
           "ir_repeat": "IR 重複次數",
           "ir_repeat_delay": "IR 重複間隔（秒）",
-          "debounce_delay": "防抖延遲（秒）"
+          "debounce_delay": "防抖延遲（秒）",
+          "realtime_position": "即時位置更新"
         }
       }
     },

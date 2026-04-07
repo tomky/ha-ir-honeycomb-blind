@@ -24,17 +24,20 @@ from .const import (
     CONF_IR_CODE_T_UP,
     CONF_IR_REPEAT,
     CONF_IR_REPEAT_DELAY,
+    CONF_REALTIME_POSITION,
     CONF_REMOTE_ENTITY,
     CONF_T_CLOSE,
     CONF_T_OPEN,
     DEFAULT_DEBOUNCE_DELAY,
     DEFAULT_IR_REPEAT,
     DEFAULT_IR_REPEAT_DELAY,
+    DEFAULT_REALTIME_POSITION,
     DEFAULT_T_CLOSE,
     DEFAULT_T_OPEN,
     DOMAIN,
     POS_MAX,
     POS_MIN,
+    REALTIME_UPDATE_INTERVAL,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -146,6 +149,11 @@ class HoneycombBlindCoordinator:
         """Return the debounce delay."""
         return self._config.get(CONF_DEBOUNCE_DELAY, DEFAULT_DEBOUNCE_DELAY)
 
+    @property
+    def realtime_position_enabled(self) -> bool:
+        """Return if realtime position update is enabled."""
+        return self._config.get(CONF_REALTIME_POSITION, DEFAULT_REALTIME_POSITION)
+
     async def async_load(self) -> None:
         """Load state from storage."""
         data = await self._store.async_load()
@@ -256,12 +264,27 @@ class HoneycombBlindCoordinator:
 
         return max(POS_MIN, min(POS_MAX, estimated))
 
+    def get_estimated_position(self) -> tuple[float | None, str | None]:
+        """Get estimated position for the currently moving rail.
+
+        Returns:
+            Tuple of (estimated_position, rail_name) where rail_name is "bottom" or "top".
+            Returns (None, None) if not moving.
+        """
+        if not self._state.is_moving:
+            return None, None
+        estimated = self._estimate_current_position()
+        return estimated, self._state.moving_rail
+
     async def _interruptible_sleep(self, seconds: float, check_interval: float = 0.1) -> bool:
         """Sleep that can be interrupted by cancel_requested flag.
 
         Returns True if completed, False if interrupted.
         """
         elapsed = 0.0
+        last_notify = 0.0
+        notify_interval = REALTIME_UPDATE_INTERVAL
+
         while elapsed < seconds:
             if self._state.cancel_requested:
                 self._log(logging.DEBUG, "Sleep interrupted by cancel request")
@@ -269,6 +292,12 @@ class HoneycombBlindCoordinator:
             sleep_time = min(check_interval, seconds - elapsed)
             await asyncio.sleep(sleep_time)
             elapsed += sleep_time
+
+            # Notify listeners periodically for realtime position updates
+            if self.realtime_position_enabled and elapsed - last_notify >= notify_interval:
+                self._notify_listeners()
+                last_notify = elapsed
+
         return True
 
     async def _do_interrupt(self) -> None:

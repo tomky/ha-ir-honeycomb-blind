@@ -129,12 +129,17 @@ class HoneycombBlindPositionCover(HoneycombBlindBaseCover):
     @property
     def current_cover_position(self) -> int:
         """Return the current position of the cover."""
+        # If moving and realtime position is enabled, show estimated position
+        if self._coordinator.is_moving and self._coordinator.realtime_position_enabled:
+            estimated, rail = self._coordinator.get_estimated_position()
+            if estimated is not None and rail == "bottom":
+                return round(estimated)
         return round(self._coordinator.pos)
 
     @property
     def icon(self) -> str:
         """Return the icon for the cover."""
-        pos = self._coordinator.pos
+        pos = self.current_cover_position  # Use current position (may be estimated)
         if pos >= 95:
             return "mdi:blinds-open"
         elif pos > 5:
@@ -212,12 +217,21 @@ class HoneycombBlindRatioCover(HoneycombBlindBaseCover):
     @property
     def current_cover_position(self) -> int:
         """Return the current position (ratio) of the cover."""
+        # If moving and realtime position is enabled, calculate ratio from estimated top position
+        if self._coordinator.is_moving and self._coordinator.realtime_position_enabled:
+            estimated, rail = self._coordinator.get_estimated_position()
+            if estimated is not None and rail == "top":
+                # Convert top_pos to ratio: ratio = (100 - top_pos) / (100 - pos) * 100
+                pos = self._coordinator.pos
+                if 100 - pos > 0:
+                    estimated_ratio = (100 - estimated) / (100 - pos) * 100
+                    return round(max(0, min(100, estimated_ratio)))
         return round(self._coordinator.ratio)
 
     @property
     def icon(self) -> str:
         """Return the icon for the cover."""
-        ratio = self._coordinator.ratio
+        ratio = self.current_cover_position  # Use current position (may be estimated)
         if ratio >= 95:
             return "mdi:blinds-horizontal-closed"
         elif ratio > 5:

@@ -20,12 +20,14 @@ from .const import (
     CONF_IR_CODE_T_UP,
     CONF_IR_REPEAT,
     CONF_IR_REPEAT_DELAY,
+    CONF_REALTIME_POSITION,
     CONF_REMOTE_ENTITY,
     CONF_T_CLOSE,
     CONF_T_OPEN,
     DEFAULT_DEBOUNCE_DELAY,
     DEFAULT_IR_REPEAT,
     DEFAULT_IR_REPEAT_DELAY,
+    DEFAULT_REALTIME_POSITION,
     DEFAULT_T_CLOSE,
     DEFAULT_T_OPEN,
     DOMAIN,
@@ -150,6 +152,9 @@ class HoneycombBlindConfigFlow(ConfigFlow, domain=DOMAIN):
                         mode=selector.NumberSelectorMode.BOX,
                     )
                 ),
+                vol.Required(
+                    CONF_REALTIME_POSITION, default=DEFAULT_REALTIME_POSITION
+                ): selector.BooleanSelector(),
             }
         )
 
@@ -293,6 +298,10 @@ class HoneycombBlindOptionsFlow(OptionsFlow):
                         mode=selector.NumberSelectorMode.BOX,
                     )
                 ),
+                vol.Required(
+                    CONF_REALTIME_POSITION,
+                    default=current.get(CONF_REALTIME_POSITION, DEFAULT_REALTIME_POSITION),
+                ): selector.BooleanSelector(),
             }
         )
 

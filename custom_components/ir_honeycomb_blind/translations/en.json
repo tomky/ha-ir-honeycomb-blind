@@ -16,7 +16,8 @@
           "t_close": "Full Close Time (seconds)",
           "ir_repeat": "IR Repeat Count",
           "ir_repeat_delay": "IR Repeat Delay (seconds)",
-          "debounce_delay": "Debounce Delay (seconds)"
+          "debounce_delay": "Debounce Delay (seconds)",
+          "realtime_position": "Real-time Position Update"
         },
         "data_description": {
           "blind_name": "A unique name for this blind",
@@ -30,7 +31,8 @@
           "t_close": "Time for blind to move from fully open to fully closed",
           "ir_repeat": "Number of times to repeat each IR command",
           "ir_repeat_delay": "Delay between repeated IR commands",
-          "debounce_delay": "Wait time before executing position changes"
+          "debounce_delay": "Wait time before executing position changes",
+          "realtime_position": "Update position display in real-time while blind is moving"
         }
       }
     },
@@ -58,7 +60,8 @@
           "t_close": "Full Close Time (seconds)",
           "ir_repeat": "IR Repeat Count",
           "ir_repeat_delay": "IR Repeat Delay (seconds)",
-          "debounce_delay": "Debounce Delay (seconds)"
+          "debounce_delay": "Debounce Delay (seconds)",
+          "realtime_position": "Real-time Position Update"
         }
       }
     },

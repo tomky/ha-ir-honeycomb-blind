@@ -15,6 +15,7 @@ CONF_T_CLOSE = "t_close"
 CONF_IR_REPEAT = "ir_repeat"
 CONF_IR_REPEAT_DELAY = "ir_repeat_delay"
 CONF_DEBOUNCE_DELAY = "debounce_delay"
+CONF_REALTIME_POSITION = "realtime_position"
 
 # Default values
 DEFAULT_T_OPEN = 30.0
@@ -22,6 +23,10 @@ DEFAULT_T_CLOSE = 30.0
 DEFAULT_IR_REPEAT = 3
 DEFAULT_IR_REPEAT_DELAY = 0.3
 DEFAULT_DEBOUNCE_DELAY = 1.0
+DEFAULT_REALTIME_POSITION = True
+
+# Realtime update interval (seconds)
+REALTIME_UPDATE_INTERVAL = 0.5
 
 # Position limits
 POS_MIN = 0
