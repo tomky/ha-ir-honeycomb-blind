@@ -76,6 +76,11 @@
     }
   },
   "entity": {
+    "binary_sensor": {
+      "is_moving": {
+        "name": "移動中"
+      }
+    },
     "button": {
       "calibrate": {
         "name": "校正"
@@ -90,6 +95,22 @@
       },
       "combined": {
         "name": "窗簾"
+      }
+    },
+    "sensor": {
+      "moving_rail": {
+        "name": "移動軌道",
+        "state": {
+          "top": "上簾",
+          "bottom": "下簾",
+          "none": "無"
+        }
+      },
+      "time_remaining": {
+        "name": "剩餘時間"
+      },
+      "last_calibration": {
+        "name": "上次校正"
       }
     }
   },

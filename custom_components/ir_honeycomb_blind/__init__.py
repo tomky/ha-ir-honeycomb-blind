@@ -15,7 +15,7 @@ from .coordinator import HoneycombBlindCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS = [Platform.BUTTON, Platform.COVER]
+PLATFORMS = [Platform.BINARY_SENSOR, Platform.BUTTON, Platform.COVER, Platform.SENSOR]
 
 SERVICE_CALIBRATE = "calibrate"
 ATTR_ENTRY_ID = "entry_id"

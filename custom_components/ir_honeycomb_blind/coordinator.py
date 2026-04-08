@@ -5,6 +5,7 @@ import asyncio
 import logging
 import time
 from dataclasses import dataclass, field
+from datetime import datetime
 from typing import Callable
 
 from homeassistant.config_entries import ConfigEntry
@@ -12,6 +13,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.storage import Store
 
 from .const import (
+    ATTR_LAST_CALIBRATION,
     ATTR_POS,
     ATTR_RATIO,
     ATTR_TOP_POS,
@@ -60,6 +62,10 @@ class BlindState:
     move_start_pos: float | None = None
     move_target_pos: float | None = None
     move_direction: int = 0  # 1 for up, -1 for down
+    move_duration: float = 0.0  # Expected duration of current movement
+
+    # Calibration tracking
+    last_calibration: datetime | None = None
 
     # Debounce state
     target_pos: float | None = None
@@ -161,6 +167,14 @@ class HoneycombBlindCoordinator:
             self._state.pos = data.get(ATTR_POS, 0.0)
             self._state.ratio = data.get(ATTR_RATIO, 0.0)
             self._state.top_pos = data.get(ATTR_TOP_POS, 100.0)
+            # Load last calibration time
+            if ATTR_LAST_CALIBRATION in data and data[ATTR_LAST_CALIBRATION]:
+                try:
+                    self._state.last_calibration = datetime.fromisoformat(
+                        data[ATTR_LAST_CALIBRATION]
+                    )
+                except (ValueError, TypeError):
+                    self._state.last_calibration = None
             self._log(
                 logging.DEBUG,
                 "Loaded state: pos=%s, ratio=%s, top_pos=%s",
@@ -175,6 +189,11 @@ class HoneycombBlindCoordinator:
             ATTR_POS: self._state.pos,
             ATTR_RATIO: self._state.ratio,
             ATTR_TOP_POS: self._state.top_pos,
+            ATTR_LAST_CALIBRATION: (
+                self._state.last_calibration.isoformat()
+                if self._state.last_calibration
+                else None
+            ),
         }
         await self._store.async_save(data)
 
@@ -276,6 +295,20 @@ class HoneycombBlindCoordinator:
         estimated = self._estimate_current_position()
         return estimated, self._state.moving_rail
 
+    def get_time_remaining(self) -> float | None:
+        """Get estimated remaining movement time in seconds.
+
+        Returns:
+            Remaining time in seconds, or None if not moving.
+        """
+        if not self._state.is_moving or self._state.move_start_time is None:
+            return None
+        if self._state.move_duration <= 0:
+            return None
+        elapsed = time.time() - self._state.move_start_time
+        remaining = self._state.move_duration - elapsed
+        return max(0.0, remaining)
+
     async def _interruptible_sleep(self, seconds: float, check_interval: float = 0.1) -> bool:
         """Sleep that can be interrupted by cancel_requested flag.
 
@@ -333,6 +366,7 @@ class HoneycombBlindCoordinator:
         self._state.move_start_pos = None
         self._state.move_target_pos = None
         self._state.move_direction = 0
+        self._state.move_duration = 0.0
 
         await self.async_save()
         self._notify_listeners()
@@ -370,6 +404,7 @@ class HoneycombBlindCoordinator:
         self._state.move_start_pos = current
         self._state.move_target_pos = target
         self._state.move_direction = direction
+        self._state.move_duration = move_time
         self._notify_listeners()
 
         # Send move command
@@ -403,6 +438,7 @@ class HoneycombBlindCoordinator:
         self._state.move_start_pos = None
         self._state.move_target_pos = None
         self._state.move_direction = 0
+        self._state.move_duration = 0.0
 
         await self.async_save()
         self._notify_listeners()
@@ -659,6 +695,7 @@ class HoneycombBlindCoordinator:
             self._state.moving_rail = None
             self._state.target_pos = None
             self._state.target_ratio = None
+            self._state.last_calibration = datetime.now()
 
             await self.async_save()
             self._notify_listeners()

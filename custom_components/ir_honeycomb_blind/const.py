@@ -45,3 +45,10 @@ ATTR_TOP_POS = "top_pos"
 ENTITY_SUFFIX_POSITION = "position"
 ENTITY_SUFFIX_RATIO = "ratio"
 ENTITY_SUFFIX_COMBINED = "combined"
+ENTITY_SUFFIX_IS_MOVING = "is_moving"
+ENTITY_SUFFIX_MOVING_RAIL = "moving_rail"
+ENTITY_SUFFIX_TIME_REMAINING = "time_remaining"
+ENTITY_SUFFIX_LAST_CALIBRATION = "last_calibration"
+
+# Persistence keys for sensors
+ATTR_LAST_CALIBRATION = "last_calibration"

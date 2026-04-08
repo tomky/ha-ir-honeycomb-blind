@@ -76,6 +76,11 @@
     }
   },
   "entity": {
+    "binary_sensor": {
+      "is_moving": {
+        "name": "Moving"
+      }
+    },
     "button": {
       "calibrate": {
         "name": "Calibrate"
@@ -90,6 +95,22 @@
       },
       "combined": {
         "name": "Blind"
+      }
+    },
+    "sensor": {
+      "moving_rail": {
+        "name": "Moving Rail",
+        "state": {
+          "top": "Top Rail",
+          "bottom": "Bottom Rail",
+          "none": "None"
+        }
+      },
+      "time_remaining": {
+        "name": "Time Remaining"
+      },
+      "last_calibration": {
+        "name": "Last Calibration"
       }
     }
   },
