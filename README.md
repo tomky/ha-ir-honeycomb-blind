@@ -81,13 +81,27 @@ This mode is ideal for platforms like HomeKit that support Window Covering + Til
 - **Broadlink Integration**: A Broadlink IR transmitter configured in Home Assistant
 - **IR Codes**: Learned IR codes for the 5 blind remote buttons (in Base64 format)
 
-### How to Obtain IR Codes
+### RF Support (433 / 315 MHz)
+
+If you use a **Broadlink RM Pro / RM4 Pro** series, this integration also supports **RF (433 / 315 MHz) controlled blinds** with no additional configuration. The `remote.send_command` service automatically determines whether to transmit via IR or RF based on the learned code content — simply fill in the learned RF codes in the same `b64:` format.
+
+### How to Obtain IR / RF Codes
+
+#### IR Codes
 
 1. Go to **Developer Tools > Services** in Home Assistant
 2. Call the `remote.learn_command` service, targeting your Broadlink device
 3. Follow the prompts and press the remote button
 4. After learning, the IR code will be stored in the Broadlink integration
 5. You can also use third-party tools (e.g., Broadlink Manager) to export Base64 IR codes
+
+#### RF Codes (RM Pro / RM4 Pro only)
+
+1. Go to **Developer Tools > Services** in Home Assistant
+2. Call the `remote.learn_command` service with `command_type: rf`
+3. **Frequency scan**: Hold down the remote button until the device beeps (scanning for RF frequency)
+4. **Code learning**: Press the remote button briefly to learn the specific code
+5. The learned RF code will be in the same `b64:` format and can be used directly
 
 **Buttons to learn:**
 - T-UP: Top rail up
