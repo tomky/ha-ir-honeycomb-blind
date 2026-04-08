@@ -7,7 +7,7 @@ from typing import Any
 import voluptuous as vol
 
 from homeassistant.config_entries import ConfigEntry, ConfigFlow, ConfigFlowResult, OptionsFlow
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import callback
 from homeassistant.helpers import selector
 
 from .const import (
@@ -38,14 +38,6 @@ from .const import (
 )
 
 _LOGGER = logging.getLogger(__name__)
-
-
-def get_remote_entities(hass: HomeAssistant) -> list[str]:
-    """Get list of remote entities."""
-    return [
-        entity_id
-        for entity_id in hass.states.async_entity_ids("remote")
-    ]
 
 
 class HoneycombBlindConfigFlow(ConfigFlow, domain=DOMAIN):

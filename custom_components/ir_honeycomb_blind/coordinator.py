@@ -5,7 +5,7 @@ import asyncio
 import logging
 import time
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Callable
 
 from homeassistant.config_entries import ConfigEntry
@@ -108,7 +108,7 @@ class HoneycombBlindCoordinator:
 
     def _log(self, level: int, msg: str, *args) -> None:
         """Log with blind name prefix."""
-        _LOGGER.log(level, f"[{self._name}] {msg}", *args)
+        _LOGGER.log(level, "[%s] " + msg, self._name, *args)
 
     @property
     def config(self) -> dict:
@@ -569,6 +569,15 @@ class HoneycombBlindCoordinator:
 
             except Exception as e:
                 self._log(logging.ERROR, "Error during movement: %s", e)
+                # Reset movement state to prevent being stuck in "moving"
+                self._state.is_moving = False
+                self._state.moving_rail = None
+                self._state.move_start_time = None
+                self._state.move_start_pos = None
+                self._state.move_target_pos = None
+                self._state.move_direction = 0
+                self._state.move_duration = 0.0
+                self._notify_listeners()
                 raise
 
     async def _debounce_and_execute(self) -> None:
@@ -653,13 +662,18 @@ class HoneycombBlindCoordinator:
             self._state.target_ratio = None
 
         # If currently moving, the cancel_requested flag will cause it to stop
-        # and _do_interrupt will be called
+        # and _do_interrupt will be called from _move_rail
         if self._state.is_moving:
-            # Wait a bit for the movement to notice the cancel
-            await asyncio.sleep(0.2)
-            # If still moving, force interrupt
-            if self._state.is_moving:
-                await self._do_interrupt()
+            # Wait for the execution lock to be released, meaning movement has finished
+            # Use a timeout to avoid waiting forever
+            for _ in range(20):  # 2 seconds max
+                await asyncio.sleep(0.1)
+                if not self._state.is_moving:
+                    break
+            else:
+                # Force interrupt if still moving after timeout
+                if self._state.is_moving:
+                    await self._do_interrupt()
 
     async def async_calibrate(self) -> None:
         """Calibrate the blind by moving to known positions."""
@@ -695,7 +709,7 @@ class HoneycombBlindCoordinator:
             self._state.moving_rail = None
             self._state.target_pos = None
             self._state.target_ratio = None
-            self._state.last_calibration = datetime.now()
+            self._state.last_calibration = datetime.now(timezone.utc)
 
             await self.async_save()
             self._notify_listeners()
