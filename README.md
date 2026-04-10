@@ -21,14 +21,14 @@ The fabric between the two rails can be flexibly positioned to cover any portion
 
 This integration offers two cover control modes (configurable in settings):
 
-#### Mode 1: Separate Controls (Default)
+#### Mode 1: Separate Controls
 
 | Entity | Type | Function | Description |
 |--------|------|----------|-------------|
 | `cover.xxx_position` | Cover | Bottom rail position | 0 (fully closed) ~ 100 (fully open) |
 | `cover.xxx_ratio` | Cover | Top rail coverage ratio | 0 (no coverage) ~ 100 (full coverage) |
 
-#### Mode 2: Combined Cover (with Tilt)
+#### Mode 2: Combined Cover with Tilt (Default)
 
 | Entity | Type | Function | Description |
 |--------|------|----------|-------------|
