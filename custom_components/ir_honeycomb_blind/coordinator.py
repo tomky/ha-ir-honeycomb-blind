@@ -252,6 +252,20 @@ class HoneycombBlindCoordinator:
         ir_code = self._config[CONF_IR_CODE_STOP]
         await self._send_ir(ir_code)
 
+    async def _interruptible_sleep(self, duration: float) -> bool:
+        """Sleep for duration, checking cancel_requested every 0.5s.
+
+        Returns True if sleep completed, False if interrupted.
+        """
+        interval = 0.5
+        remaining = duration
+        while remaining > 0:
+            if self._state.cancel_requested:
+                return False
+            await asyncio.sleep(min(interval, remaining))
+            remaining -= interval
+        return True
+
     def _calculate_move_time(self, distance: float, direction: int) -> float:
         """Calculate movement time for a given distance."""
         if direction > 0:  # Moving up
@@ -673,6 +687,7 @@ class HoneycombBlindCoordinator:
             else:
                 # Force interrupt if still moving after timeout
                 if self._state.is_moving:
+                    self._log(logging.WARNING, "Movement did not stop within timeout, forcing interrupt")
                     await self._do_interrupt()
 
     async def async_calibrate(self) -> None:
@@ -692,13 +707,19 @@ class HoneycombBlindCoordinator:
             # Step 1: Move top rail to top (out of the way)
             self._log(logging.DEBUG, "Calibration: Moving top rail to top")
             await self._send_ir(self._config[CONF_IR_CODE_T_UP])
-            await asyncio.sleep(extra_time_up)
+            if not await self._interruptible_sleep(extra_time_up):
+                self._log(logging.INFO, "Calibration interrupted during top rail movement")
+                await self._send_stop()
+                return
             await self._send_stop()
 
             # Step 2: Move bottom rail to bottom
             self._log(logging.DEBUG, "Calibration: Moving bottom rail to bottom")
             await self._send_ir(self._config[CONF_IR_CODE_B_DN])
-            await asyncio.sleep(extra_time_dn)
+            if not await self._interruptible_sleep(extra_time_dn):
+                self._log(logging.INFO, "Calibration interrupted during bottom rail movement")
+                await self._send_stop()
+                return
             await self._send_stop()
 
             # Reset to known state: POS=0, R=0, top_pos=100

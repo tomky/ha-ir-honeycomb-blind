@@ -85,9 +85,6 @@ class HoneycombBlindConfigFlow(ConfigFlow, domain=DOMAIN):
                         data=user_input,
                     )
 
-        # Get available remote entities
-        remote_entities = get_remote_entities(self.hass)
-
         # Build schema
         data_schema = vol.Schema(
             {
