@@ -6,7 +6,7 @@
         "description": "Configure a new IR-controlled honeycomb blind (Top-Down Bottom-Up).",
         "data": {
           "blind_name": "Blind Name",
-          "remote_entity": "Broadlink Remote Entity",
+          "remote_entity": "Remote Entity",
           "ir_code_t_up": "IR Code: Top Rail Up (T-UP)",
           "ir_code_t_dn": "IR Code: Top Rail Down (T-DN)",
           "ir_code_b_up": "IR Code: Bottom Rail Up (B-UP)",
@@ -23,12 +23,12 @@
         },
         "data_description": {
           "blind_name": "A unique name for this blind",
-          "remote_entity": "Select the Broadlink remote to use",
-          "ir_code_t_up": "Base64 IR code with 'b64:' prefix",
-          "ir_code_t_dn": "Base64 IR code with 'b64:' prefix",
-          "ir_code_b_up": "Base64 IR code with 'b64:' prefix",
-          "ir_code_b_dn": "Base64 IR code with 'b64:' prefix",
-          "ir_code_stop": "Base64 IR code with 'b64:' prefix",
+          "remote_entity": "Select the remote entity to use",
+          "ir_code_t_up": "IR command code (Broadlink uses 'b64:' format)",
+          "ir_code_t_dn": "IR command code (Broadlink uses 'b64:' format)",
+          "ir_code_b_up": "IR command code (Broadlink uses 'b64:' format)",
+          "ir_code_b_dn": "IR command code (Broadlink uses 'b64:' format)",
+          "ir_code_stop": "IR command code (Broadlink uses 'b64:' format)",
           "t_open": "Time for blind to move from fully closed to fully open",
           "t_close": "Time for blind to move from fully open to fully closed",
           "ir_repeat": "Number of times to repeat each IR command",
@@ -42,7 +42,7 @@
     },
     "error": {
       "remote_not_found": "Remote entity not found",
-      "invalid_ir_code": "IR codes must start with 'b64:'"
+      "empty_ir_code": "IR code cannot be empty"
     },
     "abort": {
       "already_configured": "This blind is already configured"
@@ -54,7 +54,7 @@
         "title": "Configure IR Honeycomb Blind",
         "description": "Update the configuration for this blind.",
         "data": {
-          "remote_entity": "Broadlink Remote Entity",
+          "remote_entity": "Remote Entity",
           "ir_code_t_up": "IR Code: Top Rail Up (T-UP)",
           "ir_code_t_dn": "IR Code: Top Rail Down (T-DN)",
           "ir_code_b_up": "IR Code: Bottom Rail Up (B-UP)",
@@ -72,7 +72,7 @@
       }
     },
     "error": {
-      "invalid_ir_code": "IR codes must start with 'b64:'"
+      "empty_ir_code": "IR code cannot be empty"
     }
   },
   "entity": {

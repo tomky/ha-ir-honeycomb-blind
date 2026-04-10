@@ -60,7 +60,7 @@ class HoneycombBlindConfigFlow(ConfigFlow, domain=DOMAIN):
             if not self.hass.states.get(remote_entity):
                 errors["base"] = "remote_not_found"
             else:
-                # Validate IR codes (must start with b64: for Broadlink)
+                # Validate IR codes are not empty
                 ir_codes_valid = True
                 for key in [
                     CONF_IR_CODE_T_UP,
@@ -69,9 +69,9 @@ class HoneycombBlindConfigFlow(ConfigFlow, domain=DOMAIN):
                     CONF_IR_CODE_B_DN,
                     CONF_IR_CODE_STOP,
                 ]:
-                    code = user_input.get(key, "")
-                    if not code.startswith("b64:"):
-                        errors["base"] = "invalid_ir_code"
+                    code = user_input.get(key, "").strip()
+                    if not code:
+                        errors["base"] = "empty_ir_code"
                         ir_codes_valid = False
                         break
 
@@ -184,7 +184,7 @@ class HoneycombBlindOptionsFlow(OptionsFlow):
         errors: dict[str, str] = {}
 
         if user_input is not None:
-            # Validate IR codes
+            # Validate IR codes are not empty
             ir_codes_valid = True
             for key in [
                 CONF_IR_CODE_T_UP,
@@ -193,9 +193,9 @@ class HoneycombBlindOptionsFlow(OptionsFlow):
                 CONF_IR_CODE_B_DN,
                 CONF_IR_CODE_STOP,
             ]:
-                code = user_input.get(key, "")
-                if code and not code.startswith("b64:"):
-                    errors["base"] = "invalid_ir_code"
+                code = user_input.get(key, "").strip()
+                if not code:
+                    errors["base"] = "empty_ir_code"
                     ir_codes_valid = False
                     break
 

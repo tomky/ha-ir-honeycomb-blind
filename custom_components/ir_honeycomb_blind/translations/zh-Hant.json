@@ -6,7 +6,7 @@
         "description": "設定新的紅外線控制蜂巢簾（上下合簾）。",
         "data": {
           "blind_name": "窗簾名稱",
-          "remote_entity": "Broadlink 遙控器",
+          "remote_entity": "遙控器",
           "ir_code_t_up": "IR 碼：上簾往上 (T-UP)",
           "ir_code_t_dn": "IR 碼：上簾往下 (T-DN)",
           "ir_code_b_up": "IR 碼：下簾往上 (B-UP)",
@@ -23,12 +23,12 @@
         },
         "data_description": {
           "blind_name": "為此窗簾取一個獨特的名稱",
-          "remote_entity": "選擇要使用的 Broadlink 遙控器",
-          "ir_code_t_up": "Base64 IR 碼，需以 'b64:' 開頭",
-          "ir_code_t_dn": "Base64 IR 碼，需以 'b64:' 開頭",
-          "ir_code_b_up": "Base64 IR 碼，需以 'b64:' 開頭",
-          "ir_code_b_dn": "Base64 IR 碼，需以 'b64:' 開頭",
-          "ir_code_stop": "Base64 IR 碼，需以 'b64:' 開頭",
+          "remote_entity": "選擇要使用的遙控器實體",
+          "ir_code_t_up": "IR 指令碼（Broadlink 使用 'b64:' 格式）",
+          "ir_code_t_dn": "IR 指令碼（Broadlink 使用 'b64:' 格式）",
+          "ir_code_b_up": "IR 指令碼（Broadlink 使用 'b64:' 格式）",
+          "ir_code_b_dn": "IR 指令碼（Broadlink 使用 'b64:' 格式）",
+          "ir_code_stop": "IR 指令碼（Broadlink 使用 'b64:' 格式）",
           "t_open": "窗簾從全關到全開所需時間",
           "t_close": "窗簾從全開到全關所需時間",
           "ir_repeat": "每次 IR 指令的重複發送次數",
@@ -42,7 +42,7 @@
     },
     "error": {
       "remote_not_found": "找不到遙控器實體",
-      "invalid_ir_code": "IR 碼必須以 'b64:' 開頭"
+      "empty_ir_code": "IR 碼不可為空"
     },
     "abort": {
       "already_configured": "此窗簾已設定過"
@@ -54,7 +54,7 @@
         "title": "設定紅外線蜂巢簾",
         "description": "更新此窗簾的設定。",
         "data": {
-          "remote_entity": "Broadlink 遙控器",
+          "remote_entity": "遙控器",
           "ir_code_t_up": "IR 碼：上簾往上 (T-UP)",
           "ir_code_t_dn": "IR 碼：上簾往下 (T-DN)",
           "ir_code_b_up": "IR 碼：下簾往上 (B-UP)",
@@ -72,7 +72,7 @@
       }
     },
     "error": {
-      "invalid_ir_code": "IR 碼必須以 'b64:' 開頭"
+      "empty_ir_code": "IR 碼不可為空"
     }
   },
   "entity": {

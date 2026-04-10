@@ -5,7 +5,7 @@
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2024.1%2B-blue.svg)](https://www.home-assistant.io/)
 
-A Home Assistant custom integration for controlling **Top-Down Bottom-Up (TDBU) Honeycomb Blinds** via a Broadlink IR remote.
+A Home Assistant custom integration for controlling **Top-Down Bottom-Up (TDBU) Honeycomb Blinds** via any Home Assistant IR remote entity. Tested with Broadlink.
 
 ## Overview
 
@@ -69,7 +69,7 @@ This mode is ideal for platforms like HomeKit that support Window Covering + Til
 - **Interruption Estimation**: When movement is interrupted, the current position is estimated from elapsed time
 - **Linked Adjustment**: After moving the bottom rail, the top rail is automatically adjusted to maintain the ratio
 - **Multi-blind Support**: Each blind operates independently and can be controlled simultaneously
-- **Shared Remote**: Multiple blinds can share a single Broadlink remote; IR commands are automatically queued
+- **Shared Remote**: Multiple blinds can share a single IR remote; IR commands are automatically queued
 - **State Persistence**: Position state is restored after Home Assistant restarts
 - **One-tap Calibration**: Each blind has a calibration button to reset position tracking
 - **Live Settings Reload**: Configuration changes take effect immediately without restart
@@ -78,8 +78,8 @@ This mode is ideal for platforms like HomeKit that support Window Covering + Til
 ## Requirements
 
 - **Home Assistant** 2024.1.0 or later
-- **Broadlink Integration**: A Broadlink IR transmitter configured in Home Assistant
-- **IR Codes**: Learned IR codes for the 5 blind remote buttons (in Base64 format)
+- **IR Remote Integration**: Any integration that provides a `remote` entity (e.g., Broadlink, Tuya, Xiaomi, SwitchBot, SmartIR)
+- **IR Codes**: Learned IR codes for the 5 blind remote buttons (format depends on your remote integration)
 
 ### RF Support (433 / 315 MHz)
 
@@ -157,8 +157,8 @@ If you use a **Broadlink RM Pro / RM4 Pro** series, this integration also suppor
 | Field | Description |
 |-------|-------------|
 | Blind Name | A unique name for this blind |
-| Broadlink Remote | Select the Broadlink remote entity to use |
-| IR Codes (T-UP/T-DN/B-UP/B-DN/STOP) | Paste Base64 IR codes, must start with `b64:` |
+| Remote Entity | Select the remote entity to use |
+| IR Codes (T-UP/T-DN/B-UP/B-DN/STOP) | Paste IR codes (Broadlink uses `b64:` format) |
 | Full Open Time | Seconds for the blind to go from fully closed to fully open |
 | Full Close Time | Seconds for the blind to go from fully open to fully closed |
 | IR Repeat Count | Number of times to repeat each IR command (recommended: 3) |
@@ -196,8 +196,8 @@ Call `ir_honeycomb_blind.calibrate` via **Developer Tools > Services**:
 ## Troubleshooting
 
 ### IR commands not working
-- Verify the Broadlink device is properly configured and online
-- Confirm IR codes are in the correct format (must start with `b64:`)
+- Verify the remote device is properly configured and online
+- Confirm IR codes are in the correct format for your remote integration
 - Try increasing the IR repeat count
 - Ensure there are no obstacles between the IR transmitter and the blind
 
@@ -208,7 +208,7 @@ Call `ir_honeycomb_blind.calibrate` via **Developer Tools > Services**:
 
 ### Multiple blinds interfering with each other
 - Ensure each blind uses different IR codes
-- If sharing the same Broadlink remote, IR commands are automatically queued; please be patient
+- If sharing the same IR remote, IR commands are automatically queued; please be patient
 
 ## License
 

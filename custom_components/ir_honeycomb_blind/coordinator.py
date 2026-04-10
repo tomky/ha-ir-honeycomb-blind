@@ -217,7 +217,7 @@ class HoneycombBlindCoordinator:
                 self._log(logging.ERROR, "Error notifying listener: %s", e)
 
     async def _send_ir(self, ir_code: str) -> None:
-        """Send IR command via Broadlink remote."""
+        """Send IR command via remote entity."""
         async with self._ir_lock:
             remote_entity = self._config[CONF_REMOTE_ENTITY]
             num_repeats = int(self._config.get(CONF_IR_REPEAT, DEFAULT_IR_REPEAT))
